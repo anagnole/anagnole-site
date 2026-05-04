@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { site } from "@/content/site";
 import { projects, getFeaturedProjects, getActiveProjects } from "@/content/projects";
+import { getRecentPosts } from "@/lib/posts";
+import { PostCard } from "@/components/PostCard";
 import { Arrow } from "@/components/Arrow";
 import { FeaturedCarousel } from "@/components/FeaturedCarousel";
 import { NowWorkingOn } from "@/components/NowWorkingOn";
@@ -12,6 +14,7 @@ export default function HomePage() {
     ...projects.filter((p) => !featuredSlugs.has(p.slug)),
   ];
   const activeProjects = getActiveProjects();
+  const recentPosts = getRecentPosts(3);
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-16">
@@ -57,6 +60,29 @@ export default function HomePage() {
             </span>
           </div>
           <NowWorkingOn projects={activeProjects} />
+        </section>
+      )}
+
+      {recentPosts.length > 0 && (
+        <section className="anim-fade-up anim-delay-3">
+          <div className="mb-4 flex items-baseline justify-between">
+            <h2 className="text-xl font-semibold tracking-tight">Writing</h2>
+            <Link
+              href="/blog"
+              className="group inline-flex items-center gap-1.5 text-sm text-neutral-500 transition hover:text-neutral-900 dark:hover:text-neutral-100"
+            >
+              All posts
+              <Arrow
+                size={14}
+                className="transition-transform group-hover:translate-x-1"
+              />
+            </Link>
+          </div>
+          <div>
+            {recentPosts.map((post) => (
+              <PostCard key={post.slug} post={post} />
+            ))}
+          </div>
         </section>
       )}
     </div>

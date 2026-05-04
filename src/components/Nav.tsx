@@ -13,6 +13,11 @@ export function Nav() {
         </Link>
         <ul className="flex items-center gap-6 text-sm">
           <li>
+            <Link href="/blog" className="nav-link">
+              Blog
+            </Link>
+          </li>
+          <li>
             <Link href="/projects" className="nav-link">
               Projects
             </Link>

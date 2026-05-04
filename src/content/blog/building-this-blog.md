@@ -1,12 +1,11 @@
 ---
 title: 'Why this site exists:  Becoming a full-time project manager'
-date: '2026-04-09'
+date: '2026-04-23'
 description: What do you do when AI lets you start ten projects but finish none of them?
 tags:
   - ai
   - claude
   - blogging
-image: /blog/building-this-blog/header.png?t=1777925165547
 ---
                                          
   This is the first post on this site. I think it wouldn't be appropriate to write about anything other than the page itself, so here we are.                           
