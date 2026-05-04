@@ -10,10 +10,14 @@ import {
   type Project,
 } from "@/content/projects";
 
+const AUTOPLAY_INTERVAL = 5000;
+
 export function FeaturedCarousel({ projects }: { projects: Project[] }) {
   const trackRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(true);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -31,6 +35,29 @@ export function FeaturedCarousel({ projects }: { projects: Project[] }) {
     };
   }, [projects.length]);
 
+  useEffect(() => {
+    if (paused) return;
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (reduceMotion) return;
+
+    const id = window.setInterval(() => {
+      const track = trackRef.current;
+      if (!track) return;
+      if (document.hidden) return;
+      const atEnd =
+        track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+      if (atEnd) {
+        track.scrollTo({ left: 0, behavior: "smooth" });
+      } else {
+        track.scrollBy({ left: track.clientWidth, behavior: "smooth" });
+      }
+    }, AUTOPLAY_INTERVAL);
+
+    return () => window.clearInterval(id);
+  }, [paused, projects.length]);
+
   const step = (direction: 1 | -1) => {
     const track = trackRef.current;
     if (!track) return;
@@ -38,7 +65,20 @@ export function FeaturedCarousel({ projects }: { projects: Project[] }) {
   };
 
   return (
-    <div className="relative">
+    <div
+      ref={containerRef}
+      className="relative"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={(e) => {
+        if (!containerRef.current?.contains(e.relatedTarget as Node | null)) {
+          setPaused(false);
+        }
+      }}
+      onTouchStart={() => setPaused(true)}
+      onTouchEnd={() => setPaused(false)}
+    >
       <div
         ref={trackRef}
         className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
@@ -70,20 +110,21 @@ export function FeaturedCarousel({ projects }: { projects: Project[] }) {
 function CarouselTile({ project }: { project: Project }) {
   const meta = CATEGORY_META[project.category];
   const status = STATUS_META[project.status];
+  const tileImage = project.carouselImage ?? project.image;
 
   return (
     <Link
       href={`/projects/${project.slug}`}
       className={`group relative block aspect-[2/1] overflow-hidden rounded-xl ${
-        project.image ? "bg-neutral-900" : meta.gradient
+        tileImage ? "bg-neutral-900" : meta.gradient
       }`}
     >
-      {project.image ? (
+      {tileImage ? (
         <Image
-          src={project.image}
+          src={tileImage}
           alt={project.name}
           fill
-          sizes="(max-width: 640px) 100vw, 400px"
+          sizes="(max-width: 640px) 100vw, 768px"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
       ) : (

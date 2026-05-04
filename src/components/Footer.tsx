@@ -9,9 +9,6 @@ export function Footer() {
           <a href={site.links.github} target="_blank" rel="noopener noreferrer" className="hover:text-neutral-900 dark:hover:text-neutral-100">
             GitHub
           </a>
-          <a href={site.links.twitter} target="_blank" rel="noopener noreferrer" className="hover:text-neutral-900 dark:hover:text-neutral-100">
-            Twitter
-          </a>
           <a href={site.links.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-neutral-900 dark:hover:text-neutral-100">
             LinkedIn
           </a>
