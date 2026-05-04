@@ -3,7 +3,7 @@ export const site = {
   handle: "anagnole",
   title: "Leonidas Anagnou — Knowledge graphs, agents, and the spaces between",
   description:
-    "Personal site of Leonidas Anagnou. I build knowledge graphs, agent systems, and MCP tooling.",
+    "Personal site of Leonidas Anagnou.",
   url: "https://anagnole.com",
   bio: [
     "Hi, I'm Leo! For the last three years I've been working at BlueFunctor as a Software Engineer, and I'm currently on my last semester of my ECE degree at NTUA.",
